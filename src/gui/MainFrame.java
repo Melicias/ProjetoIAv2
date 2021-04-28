@@ -48,6 +48,8 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     private Image image;
     private SwingWorker<Void, Void> worker;
 
+    private long starttime;
+
     public MainFrame() {
         try {
             jbInit();
@@ -198,9 +200,8 @@ public class MainFrame extends JFrame implements AlgorithmListener {
                 @Override
                 public Void doInBackground() {
                     try {
-
                         algorithm.run(warehouse);
-
+                        bestIndividualPanel.textArea.append("\n\nTime elapsed: "+(System.currentTimeMillis()-starttime));
                     } catch (Exception e) {
                         e.printStackTrace(System.err);
                     }
@@ -212,13 +213,13 @@ public class MainFrame extends JFrame implements AlgorithmListener {
                     manageButtons(true, true, false, true, experimentsFactory != null);
                 }
             };
-
+            starttime = System.currentTimeMillis();
             worker.execute();
-
         } catch (NumberFormatException e1) {
             JOptionPane.showMessageDialog(this, "Wrong parameters!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     @Override
     public void iterationEnded(AlgorithmEvent e) {
