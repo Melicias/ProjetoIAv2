@@ -33,7 +33,9 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         material = new int[problem.getMaterialHeight()][problem.getMaterialLength()];
         for(int i = 0;i<genome.length;i++){
             for(int j = 0 ; j < problem.getMaterialHeight()*problem.getMaterialLength(); j++){
+                //x = resto de j/nºlinhas
                 int x = j % problem.getMaterialHeight();
+                //y = j/nºcolunas
                 int y = j/problem.getMaterialLength();
                 if(checkValidPlacement(problem.getItems().get(genome[i]),x,y)){
                     Item item = problem.getItems().get(genome[i]);
