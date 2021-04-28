@@ -11,6 +11,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     //TODO this class might require the definition of additional methods and/or attributes
     private int nrCortes;
     int[][] material;
+    ArrayList<int[]> dbs;
 
     public StockingProblemIndividual(StockingProblem problem, int size) {
         //TODO
@@ -30,7 +31,6 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
 
     private void fillMaterial(){
         material = new int[problem.getMaterialHeight()][problem.getMaterialLength()];
-        //percurrer todas as cenas do genome
         for(int i = 0;i<genome.length;i++){
             for(int j = 0 ; j < problem.getMaterialHeight()*problem.getMaterialLength(); j++){
                 int x = j % problem.getMaterialHeight();
@@ -56,6 +56,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     @Override
     public double computeFitness() {
         //TODO
+        //fitness calculado com o nr cortes e o tamanho ate onde tem valores do array
         fillMaterial();
         return 1;
     }
