@@ -8,19 +8,33 @@ import java.util.ArrayList;
 
 public class StockingProblem implements Problem<StockingProblemIndividual> {
     private int materialHeight;
+    private int materialLength;
     private ArrayList<Item> items;
     //TODO this class might require the definition of additional methods and/or attributes
 
     public StockingProblem(int materialHeight, ArrayList<Item> items) {
         this.materialHeight = materialHeight;
         this.items = items;
+        this.materialLength = 0;
+        calculateLength();
         //TODO this construtor might require additional code
     }
 
     @Override
     public StockingProblemIndividual getNewIndividual() {
         //TODO
-        throw new UnsupportedOperationException("Not implemented yet.");
+        //throw new UnsupportedOperationException("Not implemented yet.");
+        return new StockingProblemIndividual(this, items.size());
+    }
+
+    private void calculateLength(){
+        for(int i = 0 ;i < items.size();i++){
+            materialLength += items.get(i).getLines();
+        }
+    }
+
+    public int getMaterialLength() {
+        return materialLength;
     }
 
     public int getMaterialHeight() {
