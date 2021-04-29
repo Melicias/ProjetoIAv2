@@ -33,15 +33,15 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         material = new int[problem.getMaterialHeight()][problem.getMaterialLength()];
         for(int i = 0; i < genome.length; i++){
             for(int j = 0 ; j < problem.getMaterialHeight()*problem.getMaterialLength(); j++){
-                //x = resto de j/nºlinhas
                 int x = j % problem.getMaterialHeight();
-                //y = j/nºcolunas
                 int y = j/problem.getMaterialLength();
                 if(checkValidPlacement(problem.getItems().get(genome[i]),x,y)){
                     Item item = problem.getItems().get(genome[i]);
+                    int[][]itemArray = item.getMatrix();
                     for(int h = 0;h<item.getLines();h++){
                         for(int l = 0;l<item.getColumns();l++){
-                            material[h+x][l+y] = item.getRepresentation();
+                            if(itemArray[h][l] != 0)
+                                material[h+x][l+y] = item.getRepresentation();
                         }
                     }
                     break;
@@ -83,7 +83,8 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                 }
             }
         }
-        return nrCortes;
+        fitness = nrCortes + tamMaxSurface;
+        return fitness;
     }
 
     private boolean checkValidPlacement(Item item, int lineIndex, int columnIndex) {
