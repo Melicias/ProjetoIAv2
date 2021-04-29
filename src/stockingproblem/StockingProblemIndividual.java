@@ -29,18 +29,24 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         }
     }
 
+    public StockingProblemIndividual(StockingProblemIndividual original) {
+        super(original);
+        this.nrCortes = original.nrCortes;
+        this.material = original.material;
+    }
+
     private void fillMaterial(){
         material = new int[problem.getMaterialHeight()][problem.getMaterialLength()];
         for(int i = 0; i < genome.length; i++){
             for(int j = 0 ; j < problem.getMaterialHeight()*problem.getMaterialLength(); j++){
                 int x = j % problem.getMaterialHeight();
-                int y = j/problem.getMaterialLength();
+                int y = j / problem.getMaterialHeight();
                 if(checkValidPlacement(problem.getItems().get(genome[i]),x,y)){
                     Item item = problem.getItems().get(genome[i]);
                     int[][]itemArray = item.getMatrix();
                     for(int h = 0;h<item.getLines();h++){
                         for(int l = 0;l<item.getColumns();l++){
-                            if(itemArray[h][l] != 0)
+                            if(itemArray[h][l] != 0 && material[h+x][l+y] == 0)
                                 material[h+x][l+y] = item.getRepresentation();
                         }
                     }
@@ -50,17 +56,13 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         }
     }
 
-    public StockingProblemIndividual(StockingProblemIndividual original) {
-        super(original);
-        this.nrCortes = original.nrCortes;
-    }
-
     @Override
     public double computeFitness() {
         //TODO
         //fitness calculado com o nr cortes e o tamanho ate onde tem valores do array
         fillMaterial();
         int tamMaxSurface = 0;
+        nrCortes = 0;
         for (int i = 0; i < material.length; i++) {
             for (int j = 1; j < material[0].length; j++) {
                 if (material[i][j] != material[i][j-1]) {
@@ -84,6 +86,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
             }
         }
         fitness = nrCortes + tamMaxSurface;
+        System.out.println("nrCortes= " + nrCortes + "   tamax = " + tamMaxSurface);
         return fitness;
     }
 
