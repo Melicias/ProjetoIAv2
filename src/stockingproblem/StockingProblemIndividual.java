@@ -85,7 +85,12 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         for (int i = 0; i<material.length;i++) {
             String linha = "\n";
             for (int j = 0; j<material[i].length;j++) {
-                linha += (char)material[i][j] + "-";
+                if(material[i][j] == 0){
+                    linha += "0";
+                }else{
+                    linha += (char)material[i][j] + "-";
+                }
+
             }
             sb.append(linha);
         }
