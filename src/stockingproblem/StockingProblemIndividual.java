@@ -31,7 +31,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
 
     private void fillMaterial(){
         material = new int[problem.getMaterialHeight()][problem.getMaterialLength()];
-        for(int i = 0;i<genome.length;i++){
+        for(int i = 0; i < genome.length; i++){
             for(int j = 0 ; j < problem.getMaterialHeight()*problem.getMaterialLength(); j++){
                 //x = resto de j/nºlinhas
                 int x = j % problem.getMaterialHeight();
@@ -60,7 +60,30 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         //TODO
         //fitness calculado com o nr cortes e o tamanho ate onde tem valores do array
         fillMaterial();
-        return 1;
+        int tamMaxSurface = 0;
+        for (int i = 0; i < material.length; i++) {
+            for (int j = 1; j < material[0].length; j++) {
+                if (material[i][j] != material[i][j-1]) {
+                    nrCortes++;
+                }
+            }
+            for (int j = material[0].length-1; j > 0 ; j--) {
+                if (material[i][j] != 0) {
+                    if (j > tamMaxSurface) {
+                        tamMaxSurface = j;
+                    }
+                    break;
+                }
+            }
+        }
+        for (int j = 0; j < material[0].length; j++) {
+            for (int i = 1; i < material.length; i++) {
+                if (material[i][j] != material[i-1][j]) {
+                    nrCortes++;
+                }
+            }
+        }
+        return nrCortes;
     }
 
     private boolean checkValidPlacement(Item item, int lineIndex, int columnIndex) {
