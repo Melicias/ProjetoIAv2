@@ -113,6 +113,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         //Center panel
         problemPanel = new PanelTextArea("Problem data: ", 20, 40);
         bestIndividualPanel = new PanelTextArea("Best solution: ", 20, 40);
+        bestIndividualPanel.setFont(new Font("monospaced", Font.PLAIN, 12));
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(problemPanel, java.awt.BorderLayout.WEST);
         centerPanel.add(bestIndividualPanel, java.awt.BorderLayout.CENTER);
