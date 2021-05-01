@@ -71,22 +71,21 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         //fitness calculado com o nr cortes e o tamanho ate onde tem valores do array
         fillMaterial();
         nrCortes = 0;
-        for (int i = 0; i < material.length; i++) {
-            for (int j = 1; j < material[0].length; j++) {
-                if (material[i][j] != material[i][j-1]) {
+        for (int i = 0; i < problem.getMaterialHeight(); i++) {
+            for (int j = 1; j < material2.size(); j++) {
+                if (material2.get(j)[i] != material2.get(j-1)[i]) {
                     nrCortes++;
                 }
             }
         }
-        for (int j = 0; j < material[0].length; j++) {
-            for (int i = 1; i < material.length; i++) {
-                if (material[i][j] != material[i-1][j]) {
+        for (int j = 0; j < material2.size(); j++) {
+            for (int i = 1; i < problem.getMaterialHeight(); i++) {
+                if (material2.get(j)[i] != material2.get(j)[i-1]) {
                     nrCortes++;
                 }
             }
         }
         fitness = nrCortes + material2.size();
-        System.out.println("nrCortes= " + nrCortes + "   tamax = " + material2.size());
         return fitness;
     }
 
@@ -154,6 +153,7 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
             sb.append(linha);
         }
         sb.append("\nNumber of cuts: ").append(nrCortes);
+        sb.append("\nSize: ").append(material2.size());
         //TODO
         return sb.toString();
     }
