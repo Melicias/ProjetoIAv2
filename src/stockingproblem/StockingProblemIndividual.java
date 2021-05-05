@@ -11,7 +11,8 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     //TODO this class might require the definition of additional methods and/or attributes
     private int nrCortes;
     int[][] material;
-    ArrayList<int[]> material2;
+    ArrayList<ArrayList<Integer>> material2;
+    int biggestSize;
 
     public StockingProblemIndividual(StockingProblem problem, int size) {
         //TODO
@@ -20,7 +21,6 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         for (int i = 0; i < genome.length; i++) {
             genome[i] = i;
         }
-
         for(int i = 0; i< genome.length;i++){
             int save = genome[i];
             int ant = GeneticAlgorithm.random.nextInt(size);
@@ -34,12 +34,15 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         this.nrCortes = original.nrCortes;
         this.material = original.material;
         this.material2 = original.material2;;
+        this.biggestSize = original.biggestSize;
     }
 
     private void fillMaterial(){
         material = new int[problem.getMaterialHeight()][problem.getMaterialLength()];
         material2 = new ArrayList<>();
-        material2.add(new int[problem.getMaterialHeight()]);
+        for(int i = 0; i < problem.getMaterialHeight();i++){
+            material2.add(new ArrayList<Integer>());
+        }
         for(int i = 0; i < genome.length; i++){
             for(int j = 0 ; j < problem.getMaterialHeight()*problem.getMaterialLength(); j++){
                 int x = j % problem.getMaterialHeight();
@@ -50,11 +53,11 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
                     int[][]itemArray = item.getMatrix();
                     for(int h = 0;h<item.getLines();h++){
                         for(int l = 0;l<item.getColumns();l++){
-                            if(material2.size() == y+l)
-                                material2.add(new int[problem.getMaterialHeight()]);
-                            if(itemArray[h][l] != 0 && material2.get(l+y)[h+x] == 0){
+                            while(material2.get(h+x).size() <= l+y)
+                                material2.get(h+x).add(0);
+                            if(itemArray[h][l] != 0){
                                 material[h+x][l+y] = item.getRepresentation();
-                                material2.get(l+y)[h+x] = item.getRepresentation();
+                                material2.get(h+x).set(l+y,item.getId());
                             }
                         }
                     }
@@ -71,17 +74,33 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         //fitness calculado com o nr cortes e o tamanho ate onde tem valores do array
         fillMaterial();
         nrCortes = 0;
+        biggestSize = 0;
         for (int i = 0; i < problem.getMaterialHeight(); i++) {
-            for (int j = 1; j < material2.size(); j++) {
-                if (material2.get(j)[i] != material2.get(j-1)[i]) {
-                    nrCortes++;
+            for (int j = 1; j < material2.get(i).size(); j++) {
+                if(material2.get(i).size() > j)
+                    if (material2.get(i).get(j) != material2.get(i).get(j - 1)) {
+                        nrCortes++;
+                    }
+            }
+            if(material2.get(i).size() > biggestSize)
+                biggestSize = material2.get(i).size();
+        }
+        nrCortes+=problem.getMaterialHeight();
+        for (int j = 0; j < biggestSize; j++) {
+            for (int i = 1; i < problem.getMaterialHeight(); i++) {
+                if(material2.get(i).size() > j && material2.get(i-1).size() > j){
+                    if (material2.get(i).get(j) != material2.get(i-1).get(j)) {
+                        nrCortes++;
+                    }
                 }
             }
         }
-        for (int j = 0; j < material2.size(); j++) {
-            for (int i = 1; i < problem.getMaterialHeight(); i++) {
-                if (material2.get(j)[i] != material2.get(j)[i-1]) {
-                    nrCortes++;
+        for(int i = 1; i< material2.size(); i++){
+            if(material2.get(i-1).size() > material2.get(i).size()){
+                nrCortes += material2.get(i-1).size() - material2.get(i).size();
+            }else{
+                if(material2.get(i-1).size() < material2.get(i).size()){
+                    nrCortes += material2.get(i).size() - material2.get(i-1).size();
                 }
             }
         }
@@ -90,22 +109,6 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
     }
 
     private boolean checkValidPlacement(Item item, int lineIndex, int columnIndex) {
-        int[][] itemMatrix = item.getMatrix();
-        for (int i = 0; i < itemMatrix.length; i++) {
-            for (int j = 0; j < itemMatrix[i].length; j++) {
-                if (itemMatrix[i][j] != 0) {
-                    if ((lineIndex + i) >= material.length
-                            || (columnIndex + j) >= material[0].length
-                            || material[lineIndex + i][columnIndex + j] != 0) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean checkValidPlacement2(Item item, int lineIndex, int columnIndex) {
         int[][] itemMatrix = item.getMatrix();
         for (int i = 0; i < itemMatrix.length; i++) {
             for (int j = 0; j < itemMatrix[i].length; j++) {
@@ -140,13 +143,13 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         }
 
         sb.append("\nmaterial2: ");
-        for (int i = 0; i<problem.getMaterialHeight();i++) {
+        for (int i = 0; i<material2.size();i++) {
             String linha = "\n";
-            for (int j = 0; j<material2.size();j++) {
-                if(material2.get(j)[i] == 0){
+            for (int j = 0; j<material2.get(i).size();j++) {
+                if(material2.get(i).get(j) == 0){
                     linha += " 0 ";
                 }else{
-                    linha += " "+(char)material2.get(j)[i] + " ";
+                    linha += " "+ (material2.get(i).get(j) < 26 ? (char) ('A' + material2.get(i).get(j)) : (char) ('A' + material2.get(i).get(j) + 6)) + " ";
                 }
 
             }
