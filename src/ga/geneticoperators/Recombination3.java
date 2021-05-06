@@ -19,6 +19,11 @@ public class Recombination3<I extends IntVectorIndividual, P extends Problem<I>>
         child1 = new int[ind1.getNumGenes()];
         child2 = new int[ind2.getNumGenes()];
 
+        for (int i = 0; i < ind1.getNumGenes(); i++) {
+            child1[i]=-1;
+            child2[i]=-1;
+        }
+
         int i1 = GeneticAlgorithm.random.nextInt(ind1.getNumGenes()-1)+1;
         int i2 = GeneticAlgorithm.random.nextInt(ind1.getNumGenes()-1)+1;
         while(i1 >= i2){
@@ -30,10 +35,10 @@ public class Recombination3<I extends IntVectorIndividual, P extends Problem<I>>
             child1[i] = ind1.getGene(i);
             child2[i] = ind2.getGene(i);
         }
-        System.out.println("Entrou");
+
         child1 = fillChilds(child1,ind2,i1,i2+1);
         child2 = fillChilds(child2,ind1,i1,i2+1);
-        System.out.println("saiu");
+
         for (int i = 0; i < ind1.getNumGenes(); i++) {
             ind1.setGene(i, child1[i]);
             ind2.setGene(i, child2[i]);
@@ -53,7 +58,7 @@ public class Recombination3<I extends IntVectorIndividual, P extends Problem<I>>
                 if(indAux >= ind.getNumGenes()) {
                     indAux = 0;
                 }
-            }while(check_forDuplicates(child, ind.getGene(indAux)));
+            }while(check_forDuplicates(child, ind.getGene(indAux) ));
             child[i2] = ind.getGene(indAux);
             i2++;
         }
