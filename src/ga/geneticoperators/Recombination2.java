@@ -24,8 +24,6 @@ public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>>
         child1[0] = value1;
         int value2 = ind2.getGene(0);
         child2[0] = value2;
-        if(ind1.getGene(0) == 18 && ind1.getFitness() == 284 && ind2.getFitness() == 296 && ind2.getGene(26)==18)
-            System.out.println("aa");
 
         do {
             child1[ind1.getIndexof(value2)] = value2;
@@ -42,8 +40,6 @@ public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>>
                 child2[i] = ind1.getGene(i);
         }
 
-        if(child1[0] == 18 && child1[26]==18)
-            System.out.println("aa");
         for (int i = 0; i < ind1.getNumGenes(); i++) {
             ind1.setGene(i, child1[i]);
             ind2.setGene(i, child2[i]);
