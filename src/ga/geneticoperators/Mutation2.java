@@ -28,6 +28,6 @@ public class Mutation2<I extends IntVectorIndividual, P extends Problem<I>> exte
     @Override
     public String toString() {
         //TODO
-        return "Scramble mutation (" + probability + ")";
+        return "Swap (" + probability + ")";
     }
 }

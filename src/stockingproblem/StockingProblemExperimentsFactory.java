@@ -72,6 +72,9 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
             case "mutation3": //TODO
                 mutation = new Mutation3<>(mutationProbability);
                 break;
+            case "mutation4": //TODO
+                mutation = new Mutation3<>(mutationProbability);
+                break;
         }
 
         //PROBLEM

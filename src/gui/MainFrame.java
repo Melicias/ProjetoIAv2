@@ -453,7 +453,7 @@ class PanelParameters extends PanelAtributesValue {
     String[] recombinationMethods = {"PMX", "CX", "CROSSOVER"};
     JComboBox jComboBoxRecombinationMethods = new JComboBox(recombinationMethods);
     JTextField jTextFieldProbRecombination = new JTextField(PROB_RECOMBINATION, TEXT_FIELD_LENGHT);
-    String[] mutationMethods = {"Insert", "Scramble", "Inversion"};
+    String[] mutationMethods = {"Insert", "Swap", "Inversion", "Scramble"};
     JComboBox jComboBoxMutationMethods = new JComboBox(mutationMethods);
     JTextField jTextFieldProbMutation = new JTextField(PROB_MUTATION, TEXT_FIELD_LENGHT);
     String[] algorithms = {"GA", "Random"};
@@ -548,6 +548,8 @@ class PanelParameters extends PanelAtributesValue {
                 return new Mutation2<>(mutationProb);
             case 2:
                 return new Mutation3<>(mutationProb);
+            case 3:
+                return new Mutation4<>(mutationProb);
         }
         return null;
     }
