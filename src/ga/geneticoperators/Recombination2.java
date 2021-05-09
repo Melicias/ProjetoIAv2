@@ -28,12 +28,11 @@ public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>>
         child1[0] = ind1.getGene(0);
         int value2 = ind2.getGene(0);
         child2[0] = value2;
-        
+
         do {
             child1[ind1.getIndexof(value2)] = value2;
             value2 = ind2.getGene(ind1.getIndexof(value2));
             child2[ind2.getIndexof(value2)] = value2;
-            System.out.println("child1[0]=" + child1[0] + "    - " + value2);
         } while (child1[0] != value2);
 
         for(int i = 0;i<child1.length;i++){
