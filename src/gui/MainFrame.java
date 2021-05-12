@@ -529,9 +529,9 @@ class PanelParameters extends PanelAtributesValue {
             case 0:
                 return new RecombinationPartialMapped<>(recombinationProb);
             case 1:
-                return new Recombination2<>(recombinationProb);
+                return new RecombinationCycleCrossover<>(recombinationProb);
             case 2:
-                return new Recombination3<>(recombinationProb);
+                return new RecombinationCrossover<>(recombinationProb);
         }
         return null;
     }
@@ -545,11 +545,11 @@ class PanelParameters extends PanelAtributesValue {
             case 0:
                 return new MutationInsert<>(mutationProb);
             case 1:
-                return new Mutation2<>(mutationProb);
+                return new MutationSwap<>(mutationProb);
             case 2:
-                return new Mutation3<>(mutationProb);
+                return new MutationInversion<>(mutationProb);
             case 3:
-                return new Mutation4<>(mutationProb);
+                return new MutationScramble<>(mutationProb);
         }
         return null;
     }

@@ -4,9 +4,9 @@ import algorithms.IntVectorIndividual;
 import algorithms.Problem;
 import ga.GeneticAlgorithm;
 
-public class Recombination3<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
+public class RecombinationCrossover<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
 
-    public Recombination3(double probability) {
+    public RecombinationCrossover(double probability) {
         super(probability);
     }
 

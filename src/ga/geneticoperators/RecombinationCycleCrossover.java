@@ -6,9 +6,9 @@ import algorithms.Problem;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Recombination2<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
+public class RecombinationCycleCrossover<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
 
-    public Recombination2(double probability) {
+    public RecombinationCycleCrossover(double probability) {
         super(probability);
     }
 

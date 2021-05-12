@@ -4,9 +4,9 @@ import algorithms.IntVectorIndividual;
 import algorithms.Problem;
 import ga.GeneticAlgorithm;
 
-public class Mutation2<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
+public class MutationSwap<I extends IntVectorIndividual, P extends Problem<I>> extends Mutation<I, P> {
 
-    public Mutation2(double probability) {
+    public MutationSwap(double probability) {
         super(probability);
     }
 
