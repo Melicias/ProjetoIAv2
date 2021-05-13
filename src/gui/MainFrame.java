@@ -27,6 +27,8 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import random.*;
+
 public class MainFrame extends JFrame implements AlgorithmListener {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +41,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     private PanelParameters panelParameters = new PanelParameters();
     private JButton buttonDataSet = new JButton("Data set");
     private JButton buttonRun = new JButton("Run");
+    private JButton buttonRun2 = new JButton("Run experiments Algorithm");
     private JButton buttonStop = new JButton("Stop");
     private JButton buttonExperiments = new JButton("Experiments");
     private JButton buttonRunExperiments = new JButton("Run experiments");
@@ -124,6 +127,8 @@ public class MainFrame extends JFrame implements AlgorithmListener {
                 BorderFactory.createTitledBorder(""),
                 BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
+        southPanel.add(buttonRun2);
+        buttonRun2.addActionListener(new ButtonRun2_actionAdapter(this));
         southPanel.add(buttonExperiments);
         buttonExperiments.addActionListener(new ButtonExperiments_actionAdapter(this));
         southPanel.add(buttonRunExperiments);
@@ -216,6 +221,31 @@ public class MainFrame extends JFrame implements AlgorithmListener {
             };
             starttime = System.currentTimeMillis();
             worker.execute();
+        } catch (NumberFormatException e1) {
+            JOptionPane.showMessageDialog(this, "Wrong parameters!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void jButtonRun2_actionPerformed(ActionEvent e) {
+
+        try {
+            bestIndividualPanel.textArea.setText("");
+            seriesBestIndividual.clear();
+            seriesAverage.clear();
+            JFileChooser fc = new JFileChooser(new java.io.File("."));
+            int returnVal = fc.showOpenDialog(this);
+
+            try {
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    runAlg run = new runAlg(fc.getSelectedFile());
+                    manageButtons(true, warehouse != null, false, true, true);
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace(System.err);
+            } catch (java.util.NoSuchElementException e2) {
+                JOptionPane.showMessageDialog(this, "File format not valid", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (NumberFormatException e1) {
             JOptionPane.showMessageDialog(this, "Wrong parameters!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
@@ -338,6 +368,20 @@ class ButtonRun_actionAdapter implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         adaptee.jButtonRun_actionPerformed(e);
+    }
+}
+
+class ButtonRun2_actionAdapter implements ActionListener {
+
+    final private MainFrame adaptee;
+
+    ButtonRun2_actionAdapter(MainFrame adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        adaptee.jButtonRun2_actionPerformed(e);
     }
 }
 

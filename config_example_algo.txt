@@ -1,0 +1,7 @@
+Runs: 30
+
+Max_generations: 2000
+
+Algorithm: RandomAlgorithm
+
+Problem_file: Problema1.txt
