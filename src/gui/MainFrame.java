@@ -268,6 +268,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         seriesBestIndividual.add(source.getIteration(), source.getGlobalBest().getFitness());
         if (source instanceof GeneticAlgorithm)
             seriesAverage.add(source.getIteration(), ((GeneticAlgorithm)source).getAverageFitness());
+        environmentUpdated(source);
         if (worker.isCancelled()) {
             e.setStopped(true);
         }
