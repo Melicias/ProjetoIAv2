@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -139,6 +140,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         southPanel.add(textFieldExperimentsStatus);
         textFieldExperimentsStatus.setEditable(false);
 
+        image = new BufferedImage(PANEL_SIZE, PANEL_SIZE, BufferedImage.TYPE_INT_RGB);
         simulationPanel.setPreferredSize(new Dimension(PANEL_SIZE, PANEL_SIZE));
         //North Panel
         simulationPanel.setBorder(BorderFactory.createCompoundBorder(
