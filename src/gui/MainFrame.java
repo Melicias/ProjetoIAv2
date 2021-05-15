@@ -50,6 +50,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     private XYSeries seriesAverage;
     private Image image;
     private SwingWorker<Void, Void> worker;
+    private JPanel simulationPanel = new JPanel();
 
     private long starttime;
 
@@ -138,11 +139,19 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         southPanel.add(textFieldExperimentsStatus);
         textFieldExperimentsStatus.setEditable(false);
 
+        simulationPanel.setPreferredSize(new Dimension(PANEL_SIZE, PANEL_SIZE));
+        //North Panel
+        simulationPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(""),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+
         //Global structure
         JPanel globalPanel = new JPanel(new BorderLayout());
         globalPanel.add(northPanel, java.awt.BorderLayout.NORTH);
         globalPanel.add(centerPanel, java.awt.BorderLayout.CENTER);
         globalPanel.add(southPanel, java.awt.BorderLayout.SOUTH);
+        globalPanel.add(simulationPanel, BorderLayout.SOUTH);
+
         this.getContentPane().add(globalPanel);
 
         pack();
@@ -341,6 +350,41 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         buttonExperiments.setEnabled(experiments);
         buttonRunExperiments.setEnabled(runExperiments);
     }
+
+    public void environmentUpdated(Algorithm<StockingProblemIndividual, StockingProblem> source) {
+        Color colors[] = {Color.YELLOW, Color.GREEN, Color.CYAN, Color.RED, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.LIGHT_GRAY, Color.BLACK, Color.BLUE};
+        Graphics g = image.getGraphics();
+        g.clearRect(0, 0, PANEL_SIZE, PANEL_SIZE);
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
+
+        if (warehouse != null) {
+            /*
+            ArrayList<ArrayList<Integer>> ordersForTruck = source.getGlobalBest().getOrdersForTruck();
+
+            for (int i = 0; i < ordersForTruck.size(); i++) {
+                g.setColor(colors[i]);
+
+                if (ordersForTruck.get(i).size() != 0) {
+                    g.drawLine((int) distributionProblem.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().y);
+                    g.drawLine((int) distributionProblem.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().y);
+                }
+
+                for (int j = 0; j < ordersForTruck.get(i).size() - 1; j++) {
+                    g.drawLine(orders.get(ordersForTruck.get(i).get(j) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(j) - 1).getPosition().y, orders.get(ordersForTruck.get(i).get(j + 1) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(j + 1) - 1).getPosition().y);
+                }
+
+            }
+            g.setColor(Color.RED);
+            g.fillOval((int) distributionProblem.getWarehousePosition().getX() - 3, (int) distributionProblem.getWarehousePosition().getY() - 3, 6, 6);
+
+            g = simulationPanel.getGraphics();
+            g.drawImage(image, 0, 0, null);
+             */
+        }
+
+    }
+
 }
 
 class ButtonDataSet_actionAdapter implements ActionListener {
