@@ -381,15 +381,16 @@ public class MainFrame extends JFrame implements AlgorithmListener {
                     if(materials.get(j)[i] == 0){
                         g.setColor(Color.black);
                     }else{
-                        System.out.println("number: " + materials.get(i)[j] + "   letter: " + (char)materials.get(i)[j]);
-                        if (materials.get(i)[j] >= 97) {
-                            System.out.println("   posicao: " + (122 - materials.get(i)[j]));
-                            g.setColor(colors.get(122 - materials.get(i)[j]));
+                        System.out.println("number: " + materials.get(j)[i] + "   letter: " + (char)materials.get(j)[i]);
+                        if (materials.get(j)[i] >= 97) {
+                            System.out.println("   posicao: " + (122 - materials.get(j)[i]));
+                            //g.setColor(colors.get(122 - materials.get(i)[j]));
                         }
-                        if (materials.get(i)[j] >= 65) {
-                            System.out.println("   posicao: " + (116 - materials.get(i)[j]));
-                            g.setColor(colors.get(116 - materials.get(i)[j]));
+                        if (materials.get(j)[i] >= 65) {
+                            System.out.println("   posicao: " + (116 - materials.get(j)[i]));
+                            //g.setColor(colors.get(116 - materials.get(i)[j]));
                         }
+                        //System.out.println("   posicao correta: " + (materials.get(i)[j]));
                     }
                     g.fillOval((int) i, (int) j, 4, 4);
                 }
