@@ -143,19 +143,19 @@ public class MainFrame extends JFrame implements AlgorithmListener {
         southPanel.add(textFieldExperimentsStatus);
         textFieldExperimentsStatus.setEditable(false);
 
-        image = new BufferedImage(PANEL_SIZE, PANEL_SIZE, BufferedImage.TYPE_INT_RGB);
         simulationPanel.setPreferredSize(new Dimension(PANEL_SIZE, PANEL_SIZE));
         //North Panel
         simulationPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(""),
                 BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
+
+        centerPanel.add(simulationPanel, BorderLayout.SOUTH);
         //Global structure
         JPanel globalPanel = new JPanel(new BorderLayout());
         globalPanel.add(northPanel, java.awt.BorderLayout.NORTH);
         globalPanel.add(centerPanel, java.awt.BorderLayout.CENTER);
         globalPanel.add(southPanel, java.awt.BorderLayout.SOUTH);
-        globalPanel.add(simulationPanel, BorderLayout.SOUTH);
 
         this.getContentPane().add(globalPanel);
 
@@ -173,6 +173,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
                 problemPanel.textArea.setText(warehouse.toString());
                 problemPanel.textArea.setCaretPosition(0);
                 buttonRun.setEnabled(true);
+                image = new BufferedImage(simulationPanel.getWidth(), PANEL_SIZE, BufferedImage.TYPE_INT_RGB);
                 for (int i = 0; i < warehouse.getItems().size(); i++) {
                     Random rand = new Random();
                     // Java 'Color' class takes 3 floats, from 0 to 1.
@@ -367,55 +368,30 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     }
 
     public void environmentUpdated(Algorithm<StockingProblemIndividual, StockingProblem> source) {
-        //Color colors[] = {Color.YELLOW, Color.GREEN, Color.CYAN, Color.RED, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.LIGHT_GRAY, Color.BLACK, Color.BLUE};
         Graphics g = image.getGraphics();
-        g.clearRect(0, 0, PANEL_SIZE, PANEL_SIZE);
+        g.clearRect(0, 0, simulationPanel.getWidth(), PANEL_SIZE);
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
+        g.fillRect(0, 0, simulationPanel.getWidth(), PANEL_SIZE);
 
         if (warehouse != null) {
             ArrayList<int[]> materials = source.getGlobalBest().getMaterial();
-
+            int sizeImage = materials.size() > 80 ? 4 : 10;
             for (int i = 0; i<warehouse.getMaterialHeight();i++) {
                 for (int j = 0; j< materials.size()-1; j++) {
                     if(materials.get(j)[i] == 0){
                         g.setColor(Color.black);
                     }else{
-                        System.out.println("number: " + materials.get(j)[i] + "   letter: " + (char)materials.get(j)[i]);
-                        if (materials.get(j)[i] >= 97) {
-                            System.out.println("   posicao: " + (122 - materials.get(j)[i]));
-                            //g.setColor(colors.get(122 - materials.get(i)[j]));
+                        if (materials.get(j)[i] <= 90) { //A = 65    Z = 90
+                            g.setColor(colors.get(materials.get(j)[i] - 65));
+                        }else{ // a = 97   z = 122
+                            g.setColor(colors.get(materials.get(j)[i] - 71));
                         }
-                        if (materials.get(j)[i] >= 65) {
-                            System.out.println("   posicao: " + (116 - materials.get(j)[i]));
-                            //g.setColor(colors.get(116 - materials.get(i)[j]));
-                        }
-                        //System.out.println("   posicao correta: " + (materials.get(i)[j]));
                     }
-                    g.fillOval((int) i, (int) j, 4, 4);
+                    g.fillRect(j*sizeImage, i*sizeImage, sizeImage, sizeImage);
                 }
             }
-
-            /*ArrayList<ArrayList<Integer>> ordersForTruck = source.getGlobalBest().com;
-
-            for (int i = 0; i < ordersForTruck.size(); i++) {
-                g.setColor(colors[i]);
-
-                if (ordersForTruck.get(i).size() != 0) {
-                    g.drawLine((int) warehouse.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().y);
-                    g.drawLine((int) warehouse.distributionProblem.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().y);
-                }
-
-                for (int j = 0; j < ordersForTruck.get(i).size() - 1; j++) {
-                    g.drawLine(orders.get(ordersForTruck.get(i).get(j) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(j) - 1).getPosition().y, orders.get(ordersForTruck.get(i).get(j + 1) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(j + 1) - 1).getPosition().y);
-                }
-
-            }
-            g.setColor(Color.RED);
-            g.fillOval((int) distributionProblem.getWarehousePosition().getX() - 3, (int) distributionProblem.getWarehousePosition().getY() - 3, 6, 6);
-
             g = simulationPanel.getGraphics();
-            g.drawImage(image, 0, 0, null);*/
+            g.drawImage(image, 0, 0, simulationPanel.getWidth(),PANEL_SIZE,null);
 
         }
 
