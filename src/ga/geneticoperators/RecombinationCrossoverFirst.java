@@ -4,9 +4,9 @@ import algorithms.IntVectorIndividual;
 import algorithms.Problem;
 import ga.GeneticAlgorithm;
 
-public class RecombinationCrossover<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
+public class RecombinationCrossoverFirst<I extends IntVectorIndividual, P extends Problem<I>> extends Recombination<I, P> {
 
-    public RecombinationCrossover(double probability) {
+    public RecombinationCrossoverFirst(double probability) {
         super(probability);
     }
 
@@ -36,8 +36,8 @@ public class RecombinationCrossover<I extends IntVectorIndividual, P extends Pro
             child2[i] = ind2.getGene(i);
         }
 
-        child1 = fillChilds(child1,ind2,i1,i2+1);
-        child2 = fillChilds(child2,ind1,i1,i2+1);
+        child1 = fillChilds(child1,ind2);
+        child2 = fillChilds(child2,ind1);
 
         for (int i = 0; i < ind1.getNumGenes(); i++) {
             ind1.setGene(i, child1[i]);
@@ -46,21 +46,18 @@ public class RecombinationCrossover<I extends IntVectorIndividual, P extends Pro
 
     }
 
-
-    private int[] fillChilds(int[] child,I ind,int i1, int i2){
-        int indAux = i2;
-        while (i2 != i1){
-            if(i2 == ind.getNumGenes()) {
-                i2 = 0;
-            }
-            do{
-                indAux++;
-                if(indAux >= ind.getNumGenes()) {
-                    indAux = 0;
+    private int[] fillChilds(int[] child,I ind){
+        int ind1 = 0;
+        int indAux = 0;
+        while (ind1 < child.length){
+            if(child[ind1] != -1){
+                while(check_forDuplicates(child, ind.getGene(indAux))){
+                    indAux++;
                 }
-            }while(check_forDuplicates(child, ind.getGene(indAux) ));
-            child[i2] = ind.getGene(indAux);
-            i2++;
+                child[ind1] = ind.getGene(indAux);
+                ind1++;
+                indAux++;
+            }
         }
         return child;
     }
@@ -78,7 +75,7 @@ public class RecombinationCrossover<I extends IntVectorIndividual, P extends Pro
     public String toString(){
         //TODO
         //crossover 2 random, corta ai e troca o meu para o oposto
-        //depois troca comeca a inserir consoante n acha a partir do segundo ponto
-        return "Crossover Last point";
+        //depois troca comeca a inserir consoante o 1 elemento oposto.
+        return "order 1 crossover";
     }
 }
