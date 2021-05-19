@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class StockingProblemIndividual extends IntVectorIndividual<StockingProblem, StockingProblemIndividual> {
     //TODO this class might require the definition of additional methods and/or attributes
     private int nrCortes;
-    ArrayList<int[]> material;
+    public ArrayList<int[]> material;
 
     public StockingProblemIndividual(StockingProblem problem, int size) {
         //TODO
@@ -54,7 +54,6 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         }
     }
 
-
     @Override
     public double computeFitness() {
         //TODO
@@ -78,6 +77,10 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         }
         fitness = nrCortes + material.size()-1;
         return fitness;
+    }
+
+    public ArrayList<int[]> getMaterial(){
+        return material;
     }
 
     private boolean checkValidPlacement(Item item, int lineIndex, int columnIndex) {
