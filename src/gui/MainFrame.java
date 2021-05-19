@@ -35,6 +35,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     private static final long serialVersionUID = 1L;
     public static final int PANEL_SIZE = 250;
     private StockingProblem warehouse;
+    private StockingProblemIndividual stockingProblemIndividual;
     private Algorithm<StockingProblemIndividual, StockingProblem> algorithm;
     private StockingProblemExperimentsFactory experimentsFactory;
     private PanelTextArea problemPanel;
@@ -355,22 +356,44 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     }
 
     public void environmentUpdated(Algorithm<StockingProblemIndividual, StockingProblem> source) {
-        Color colors[] = {Color.YELLOW, Color.GREEN, Color.CYAN, Color.RED, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.LIGHT_GRAY, Color.BLACK, Color.BLUE};
+        //Color colors[] = {Color.YELLOW, Color.GREEN, Color.CYAN, Color.RED, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.LIGHT_GRAY, Color.BLACK, Color.BLUE};
+        ArrayList<Color> colors = new ArrayList<>();
+        for (int i = 0; i < warehouse.getItems().size(); i++) {
+            Random rand = new Random();
+            // Java 'Color' class takes 3 floats, from 0 to 1.
+            float r = rand.nextFloat();
+            float g = rand.nextFloat();
+            float b = rand.nextFloat();
+            Color randomColor = new Color(r, g, b);
+            colors.add(randomColor);
+        }
         Graphics g = image.getGraphics();
         g.clearRect(0, 0, PANEL_SIZE, PANEL_SIZE);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
 
         if (warehouse != null) {
-            /*
-            ArrayList<ArrayList<Integer>> ordersForTruck = source.getGlobalBest().getOrdersForTruck();
+            ArrayList<int[]> material = stockingProblemIndividual.getMaterial();
+
+            for (int i = 0; i < warehouse.getMaterialHeight(); i++) {
+                for (int j = 0; j < material.size(); j++) {
+                    if (material.get(i)[j] >= 97) {
+                        g.setColor(colors.get(122 - material.get(i)[j]));
+                    }
+                    if (material.get(i)[j] >= 65) {
+                        g.setColor(colors.get(116 - material.get(i)[j]));
+                    }
+                }
+            }
+
+            /*ArrayList<ArrayList<Integer>> ordersForTruck = source.getGlobalBest().com;
 
             for (int i = 0; i < ordersForTruck.size(); i++) {
                 g.setColor(colors[i]);
 
                 if (ordersForTruck.get(i).size() != 0) {
-                    g.drawLine((int) distributionProblem.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().y);
-                    g.drawLine((int) distributionProblem.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().y);
+                    g.drawLine((int) warehouse.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(0) - 1).getPosition().y);
+                    g.drawLine((int) warehouse.distributionProblem.getWarehousePosition().getX(), (int) distributionProblem.getWarehousePosition().getY(), orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().x, orders.get(ordersForTruck.get(i).get(ordersForTruck.get(i).size() - 1) - 1).getPosition().y);
                 }
 
                 for (int j = 0; j < ordersForTruck.get(i).size() - 1; j++) {
@@ -382,8 +405,8 @@ public class MainFrame extends JFrame implements AlgorithmListener {
             g.fillOval((int) distributionProblem.getWarehousePosition().getX() - 3, (int) distributionProblem.getWarehousePosition().getY() - 3, 6, 6);
 
             g = simulationPanel.getGraphics();
-            g.drawImage(image, 0, 0, null);
-             */
+            g.drawImage(image, 0, 0, null);*/
+
         }
 
     }
