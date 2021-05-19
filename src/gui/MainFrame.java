@@ -15,10 +15,12 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import random.RandomAlgorithm;
 import stockingproblem.*;
 import org.jfree.chart.ChartFactory;
@@ -35,7 +37,6 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     private static final long serialVersionUID = 1L;
     public static final int PANEL_SIZE = 250;
     private StockingProblem warehouse;
-    private StockingProblemIndividual stockingProblemIndividual;
     private Algorithm<StockingProblemIndividual, StockingProblem> algorithm;
     private StockingProblemExperimentsFactory experimentsFactory;
     private PanelTextArea problemPanel;
@@ -53,6 +54,7 @@ public class MainFrame extends JFrame implements AlgorithmListener {
     private Image image;
     private SwingWorker<Void, Void> worker;
     private JPanel simulationPanel = new JPanel();
+    private ArrayList<Color> colors = new ArrayList<>();
 
     private long starttime;
 
@@ -171,6 +173,15 @@ public class MainFrame extends JFrame implements AlgorithmListener {
                 problemPanel.textArea.setText(warehouse.toString());
                 problemPanel.textArea.setCaretPosition(0);
                 buttonRun.setEnabled(true);
+                for (int i = 0; i < warehouse.getItems().size(); i++) {
+                    Random rand = new Random();
+                    // Java 'Color' class takes 3 floats, from 0 to 1.
+                    float r = rand.nextFloat();
+                    float g = rand.nextFloat();
+                    float b = rand.nextFloat();
+                    Color randomColor = new Color(r, g, b);
+                    colors.add(randomColor);
+                }
             }
         } catch (IOException e1) {
             e1.printStackTrace(System.err);
@@ -357,32 +368,30 @@ public class MainFrame extends JFrame implements AlgorithmListener {
 
     public void environmentUpdated(Algorithm<StockingProblemIndividual, StockingProblem> source) {
         //Color colors[] = {Color.YELLOW, Color.GREEN, Color.CYAN, Color.RED, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.LIGHT_GRAY, Color.BLACK, Color.BLUE};
-        ArrayList<Color> colors = new ArrayList<>();
-        for (int i = 0; i < warehouse.getItems().size(); i++) {
-            Random rand = new Random();
-            // Java 'Color' class takes 3 floats, from 0 to 1.
-            float r = rand.nextFloat();
-            float g = rand.nextFloat();
-            float b = rand.nextFloat();
-            Color randomColor = new Color(r, g, b);
-            colors.add(randomColor);
-        }
         Graphics g = image.getGraphics();
         g.clearRect(0, 0, PANEL_SIZE, PANEL_SIZE);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
 
         if (warehouse != null) {
-            ArrayList<int[]> material = stockingProblemIndividual.getMaterial();
+            ArrayList<int[]> materials = source.getGlobalBest().getMaterial();
 
-            for (int i = 0; i < warehouse.getMaterialHeight(); i++) {
-                for (int j = 0; j < material.size(); j++) {
-                    if (material.get(i)[j] >= 97) {
-                        g.setColor(colors.get(122 - material.get(i)[j]));
+            for (int i = 0; i<warehouse.getMaterialHeight();i++) {
+                for (int j = 0; j< materials.size()-1; j++) {
+                    if(materials.get(j)[i] == 0){
+                        g.setColor(Color.black);
+                    }else{
+                        System.out.println("number: " + materials.get(i)[j] + "   letter: " + (char)materials.get(i)[j]);
+                        if (materials.get(i)[j] >= 97) {
+                            System.out.println("   posicao: " + (122 - materials.get(i)[j]));
+                            g.setColor(colors.get(122 - materials.get(i)[j]));
+                        }
+                        if (materials.get(i)[j] >= 65) {
+                            System.out.println("   posicao: " + (116 - materials.get(i)[j]));
+                            g.setColor(colors.get(116 - materials.get(i)[j]));
+                        }
                     }
-                    if (material.get(i)[j] >= 65) {
-                        g.setColor(colors.get(116 - material.get(i)[j]));
-                    }
+                    g.fillOval((int) i, (int) j, 4, 4);
                 }
             }
 
