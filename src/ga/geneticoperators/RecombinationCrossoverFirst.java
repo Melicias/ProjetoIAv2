@@ -53,11 +53,13 @@ public class RecombinationCrossoverFirst<I extends IntVectorIndividual, P extend
             if(child[ind1] != -1){
                 while(check_forDuplicates(child, ind.getGene(indAux))){
                     indAux++;
+                    if(indAux >= child1.length)
+                        return child;
                 }
                 child[ind1] = ind.getGene(indAux);
-                ind1++;
                 indAux++;
             }
+            ind1++;
         }
         return child;
     }
@@ -76,6 +78,6 @@ public class RecombinationCrossoverFirst<I extends IntVectorIndividual, P extend
         //TODO
         //crossover 2 random, corta ai e troca o meu para o oposto
         //depois troca comeca a inserir consoante o 1 elemento oposto.
-        return "order 1 crossover";
+        return "Order 1 crossover";
     }
 }

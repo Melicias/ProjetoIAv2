@@ -550,7 +550,7 @@ class PanelParameters extends PanelAtributesValue {
     String[] selectionMethods = {"Tournament", "Roulette wheel"};
     JComboBox jComboBoxSelectionMethods = new JComboBox(selectionMethods);
     JTextField jTextFieldTournamentSize = new JTextField(TOURNAMENT_SIZE, TEXT_FIELD_LENGHT);
-    String[] recombinationMethods = {"PMX", "CX", "CROSSOVER"};
+    String[] recombinationMethods = {"PMX", "CX", "CROSSOVER", "CROSSOVER FIRST"};
     JComboBox jComboBoxRecombinationMethods = new JComboBox(recombinationMethods);
     JTextField jTextFieldProbRecombination = new JTextField(PROB_RECOMBINATION, TEXT_FIELD_LENGHT);
     String[] mutationMethods = {"Insert", "Swap", "Inversion", "Scramble"};
@@ -632,6 +632,8 @@ class PanelParameters extends PanelAtributesValue {
                 return new RecombinationCycleCrossover<>(recombinationProb);
             case 2:
                 return new RecombinationCrossover<>(recombinationProb);
+            case 3:
+                return new RecombinationCrossoverFirst<>(recombinationProb);
         }
         return null;
     }
