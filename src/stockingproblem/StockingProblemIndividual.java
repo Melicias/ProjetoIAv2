@@ -61,6 +61,16 @@ public class StockingProblemIndividual extends IntVectorIndividual<StockingProbl
         fillMaterial();
         material.add(new int[problem.getMaterialHeight()]);
         nrCortes = 0;
+        /*for (int i = 1; i < problem.getMaterialHeight(); i++) {
+            for (int j = 1; j < material.size(); j++) {
+                if (material.get(j)[i-1] != material.get(j-1)[i-1]) {
+                    nrCortes++;
+                }
+                if (material.get(j-1)[i] != material.get(j-1)[i-1]) {
+                    nrCortes++;
+                }
+            }
+        }*/
         for (int i = 0; i < problem.getMaterialHeight(); i++) {
             for (int j = 1; j < material.size(); j++) {
                 if (material.get(j)[i] != material.get(j-1)[i]) {
