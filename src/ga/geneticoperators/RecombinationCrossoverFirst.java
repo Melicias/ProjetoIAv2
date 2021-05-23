@@ -50,11 +50,9 @@ public class RecombinationCrossoverFirst<I extends IntVectorIndividual, P extend
         int ind1 = 0;
         int indAux = 0;
         while (ind1 < child.length){
-            if(child[ind1] != -1){
+            if(child[ind1] == -1){
                 while(check_forDuplicates(child, ind.getGene(indAux))){
                     indAux++;
-                    if(indAux >= child1.length)
-                        return child;
                 }
                 child[ind1] = ind.getGene(indAux);
                 indAux++;
