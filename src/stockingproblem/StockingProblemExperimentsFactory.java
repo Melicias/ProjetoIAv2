@@ -58,7 +58,7 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
                 recombination = new RecombinationCrossover<>(recombinationProbability);
                 break;
             case "cf": //TODO
-                recombination = new RecombinationCrossover<>(recombinationProbability);
+                recombination = new RecombinationCrossoverFirst<>(recombinationProbability);
                 break;
         }
 
@@ -76,7 +76,7 @@ public class StockingProblemExperimentsFactory extends ExperimentsFactory {
                 mutation = new MutationInversion<>(mutationProbability);
                 break;
             case "scramble": //TODO
-                mutation = new MutationInversion<>(mutationProbability);
+                mutation = new MutationScramble<>(mutationProbability);
                 break;
         }
 
